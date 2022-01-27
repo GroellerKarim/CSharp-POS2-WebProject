@@ -14,15 +14,13 @@ namespace Spg.Domain.Model
 
         protected Customer() { }
 
-        public Customer(string firstName, string lastName, string eMail, string password, Address address, List<Shipment> shipments, List<ProductItem> inCart)
+        public Customer(string firstName, string lastName, string eMail, string password, Address address)
         {
             FirstName = firstName;
             LastName = lastName;
             EMail = eMail;
             Password = password;
             Address = address;
-            _shipments = shipments;
-            _inCart = inCart;
         }
 
         public int Id { get; init; }
@@ -42,6 +40,77 @@ namespace Spg.Domain.Model
 
         private List<ProductItem> _inCart = new();
         public virtual IReadOnlyList<ProductItem> ProductItems => _inCart;
+
+        public Shipment CartToShipment()
+        {
+            if (_inCart.Count > 0)
+            {
+                Shipment shipment = new Shipment(this, States.InPayment);
+                shipment.AddProductItems(_inCart);
+
+                _shipments.Add(shipment);
+                return shipment;
+            }
+            else
+            {
+                throw new Exception("Nothing in Cart!");
+            }
+        }
+
+        public Shipment AddShipment(Shipment shipment)
+        {
+            if(shipment != null)
+            {
+                _shipments.Add(shipment);
+                return shipment;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public void AddShipments(List<Shipment> shipments)
+        {
+            if(shipments != null)
+            {
+                foreach(Shipment shipment in shipments)
+                    AddShipment(shipment);
+            }
+        }
+
+        public ProductItem AddToCart(ProductItem productItem)
+        {
+            if(productItem != null)
+            {
+                _inCart.Add(productItem);
+                return productItem;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public void AddListToCart(List<ProductItem> productItems)
+        {
+            if(productItems != null)
+            {
+                foreach(ProductItem productItem in productItems)
+                    AddToCart(productItem);
+            }
+        }
+
+        public void RemoveProductItem(ProductItem productItem)
+        {
+            ProductItem item = _inCart.FirstOrDefault(s => s.Id == productItem.Id);
+            if(item != null)
+            {
+                item.Product.Stock += item.Count;
+                _inCart.Remove(item);
+            }
+        }
+
 
     }
 }

@@ -10,10 +10,9 @@ namespace Spg.Domain.Model
     {
         protected Category() { }
 
-        public Category(string name, List<Product> products)
+        public Category(string name)
         {
             Name = name;
-            _products = products;
         }
 
         public int Id { get; init; }
@@ -21,6 +20,34 @@ namespace Spg.Domain.Model
 
         private List<Product> _products = new();
         public virtual List<Product> Products => _products;
+
+
+        public Product AddProduct(Product product)
+        {
+            if(product != null) 
+            {
+                product.CategoryId = Id;
+                _products.Add(product);
+                return product;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public Product RemoveProduct(Product product)
+        {
+            if(product != null)
+            {
+                _products.Remove(product);
+                return product;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
 
     }
 }

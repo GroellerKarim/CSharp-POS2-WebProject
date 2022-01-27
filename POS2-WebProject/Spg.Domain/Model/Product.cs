@@ -23,7 +23,7 @@ namespace Spg.Domain.Model
         public string Content { get; private set; }
         public decimal Price { get; private set; }
         public decimal Tax { get; private set; }
-        public int Stock { get; private set; }
+        public int Stock { get;  set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 

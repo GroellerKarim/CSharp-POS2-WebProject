@@ -14,10 +14,9 @@ namespace Spg.Domain.Model
 
         protected Shipment() { }
 
-        public Shipment(Customer customer, List<ProductItem> products, States state)
+        public Shipment(Customer customer, States state)
         {
             Customer = customer;
-            _products = products;
             State = state;
         }
 
@@ -30,6 +29,28 @@ namespace Spg.Domain.Model
         public virtual IReadOnlyList<ProductItem> ProductItems =>  _products;
 
         public States State { get; set; } 
+
+        public ProductItem AddProductItem(ProductItem product)
+        {
+            if(product != null)
+            {
+                _products.Add(product);
+                return product;
+            }
+            else
+            {
+                throw new ArgumentNullException();
+            }
+        }
+
+        public void AddProductItems(List<ProductItem> products)
+        {
+            if(products != null)
+            {
+                foreach(ProductItem productItem in products)
+                    AddProductItem(productItem);
+            }
+        }
 
     }
 }
