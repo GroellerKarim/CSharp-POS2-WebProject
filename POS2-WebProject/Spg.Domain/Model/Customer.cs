@@ -111,6 +111,11 @@ namespace Spg.Domain.Model
             }
         }
 
+        public string ChangePassword(string password)
+        {
+            Password = password;
+            return Password;
+        }
 
     }
 }

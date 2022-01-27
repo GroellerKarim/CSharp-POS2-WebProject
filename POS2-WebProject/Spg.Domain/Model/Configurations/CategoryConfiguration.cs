@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Spg.Domain.Model.Configurations
 {
-    public class ShipmentConfiguration : IEntityTypeConfiguration<Shipment>
+    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
-        public void Configure(EntityTypeBuilder<Shipment> builder)
+        public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.OwnsMany(c => c.ProductItems);
+            builder.HasMany<Product>(c => c.Products);
         }
     }
 }
