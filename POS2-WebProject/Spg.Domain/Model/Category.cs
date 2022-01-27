@@ -36,6 +36,15 @@ namespace Spg.Domain.Model
             }
         }
 
+        public void AddProducts(List<Product> products)
+        {
+            if(products != null)
+            {
+                foreach(Product product in products)
+                    AddProduct(product);
+            }
+        }
+
         public Product RemoveProduct(Product product)
         {
             if(product != null)
